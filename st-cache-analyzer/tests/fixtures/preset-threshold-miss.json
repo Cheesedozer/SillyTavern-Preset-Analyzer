@@ -1,4 +1,41 @@
 {
-    "prompts": [],
-    "prompt_order": []
+    "prompts": [
+        {
+            "identifier": "main",
+            "name": "Main Prompt",
+            "content": "You are a creative writing assistant specializing in fantasy fiction.",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 0,
+            "injection_depth": 4
+        },
+        {
+            "identifier": "charDescription",
+            "name": "Character Description",
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam. Extra padding text to bring token count close to but below 1024 threshold for testing purposes. The warrior stands at the gates of the ancient city, their sword drawn. The wind howls through the ruins as shadows dance across the crumbling walls. A faint light flickers in the distance, promising shelter or perhaps danger. The choice lies ahead, and every step matters in this unforgiving world. The mountains loom behind, their peaks shrouded in eternal mist. Legends speak of creatures that dwell within those clouds, ancient beings older than time itself. Some say they guard treasures beyond imagination, others claim they consume the souls of the unwary. Whatever the truth, the path forward leads inevitably toward their domain. The warrior tightens their grip on the blade, feeling the familiar weight of steel and purpose. This is what they trained for. This is why they left everything behind. And now, standing at the crossroads of destiny, they must choose: the known path of safety, or the perilous road to glory. There is no turning back. The ancient texts spoke of a ritual, a ceremony performed at the convergence of three moons. Only then could the seal be broken and the artifact retrieved from its resting place deep within the temple. The warrior had studied these texts for years, memorizing every symbol, every incantation. The knowledge burned in their mind like a flame that refused to be extinguished. Companions had come and gone, some lost to the dangers of the road, others simply unable to bear the weight of the quest any longer. But the warrior pressed on, driven by something deeper than duty or honor. It was a promise made long ago, whispered in the fading light of a dying fire, to someone who would never hear its fulfillment. The forests gave way to barren plains, and the plains to jagged cliffs overlooking an endless sea. Salt spray stung the warrior's face as they descended the narrow path carved into the rock face. Below, waves crashed against stones worn smooth by centuries of relentless assault. A cave mouth yawned open at the base of the cliff, half-hidden by curtains of seaweed and foam. This was the place. The warrior could feel it in their bones, a resonance that hummed through every fiber of their being. They drew a steadying breath, checked the straps of their armor one final time, and stepped into the darkness. The echoes of dripping water guided their path as the tunnel wound deeper into the earth. Strange markings covered the walls, glowing faintly with a phosphorescent light that pulsed like a heartbeat.",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 0,
+            "injection_depth": 4
+        },
+        {
+            "identifier": "chatHistory",
+            "name": "Chat History",
+            "content": "",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 0,
+            "injection_depth": null
+        }
+    ],
+    "prompt_order": [
+        {
+            "character_id": 100001,
+            "order": [
+                { "identifier": "main", "enabled": true },
+                { "identifier": "charDescription", "enabled": true },
+                { "identifier": "chatHistory", "enabled": true }
+            ]
+        }
+    ]
 }
