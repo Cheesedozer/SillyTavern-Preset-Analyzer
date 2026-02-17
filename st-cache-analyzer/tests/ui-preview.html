@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Cache Analyzer UI Preview</title>
+    <link rel="stylesheet" href="../ui/styles.css">
+    <style>
+        body {
+            background: #1a1a1a;
+            padding: 20px;
+            margin: 0;
+            font-family: sans-serif;
+        }
+        .preview-container {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .section-label {
+            color: #666;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 24px 0 8px;
+        }
+        .section-label:first-child { margin-top: 0; }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <!-- Full Dashboard Preview -->
+        <div class="section-label">Full Dashboard</div>
+        <div class="cache-analyzer" id="preview-dashboard"></div>
+
+        <!-- Prompt Visualization Preview -->
+        <div class="section-label">Prompt Order Visualization</div>
+        <div class="cache-analyzer" id="preview-prompt-viz"></div>
+
+        <!-- Empty State Preview -->
+        <div class="section-label">Empty State</div>
+        <div class="cache-analyzer" id="preview-empty"></div>
+
+        <!-- Loading State Preview -->
+        <div class="section-label">Loading State</div>
+        <div class="cache-analyzer" id="preview-loading"></div>
+    </div>
+
+    <script src="../ui/components.js"></script>
+    <script>
+        // Mock analysis results
+        var mockResults = {
+            score: 72,
+            summary: { critical: 2, warning: 3, info: 1 },
+            findings: [
+                {
+                    id: 'macro-1', rule: 'macro-placement', severity: 'critical',
+                    title: 'Dynamic macro in system prompt',
+                    description: '{{random}} found in "Main Prompt" (position 1 of 8). Changes every generation and invalidates the cached prefix.',
+                    recommendation: 'Move {{random}} after chat history or replace with fixed value.',
+                    affectedEntry: 'main', provider: 'all',
+                    meta: { macroFound: '{{random}}', position: 0, totalEntries: 8 }
+                },
+                {
+                    id: 'macro-2', rule: 'macro-placement', severity: 'critical',
+                    title: 'Dynamic macro in system prompt',
+                    description: '{{date}} found in "Main Prompt" (position 1 of 8). Changes every generation and invalidates the cached prefix.',
+                    recommendation: 'Move {{date}} after chat history or replace with fixed value.',
+                    affectedEntry: 'main', provider: 'all',
+                    meta: { macroFound: '{{date}}', position: 0, totalEntries: 8 }
+                },
+                {
+                    id: 'threshold-1', rule: 'token-thresholds', severity: 'warning',
+                    title: 'Stable prefix below cache threshold',
+                    description: 'The stable prefix is estimated at 950 tokens, which is below the anthropic caching threshold of 1024 tokens.',
+                    recommendation: 'Add more detail to system prompt or character card to reach 1024 tokens.',
+                    affectedEntry: 'all', provider: 'anthropic',
+                    meta: { estimatedTokens: 950, threshold: 1024 }
+                },
+                {
+                    id: 'ordering-1', rule: 'prompt-ordering', severity: 'warning',
+                    title: 'Volatile content interleaved with stable prefix',
+                    description: '"Chat History" (position 2) is volatile and appears before 3 stable entries. This breaks the cacheable prefix.',
+                    recommendation: 'Move "Chat History" after all stable prompt entries.',
+                    affectedEntry: 'chatHistory', provider: 'all',
+                    meta: {}
+                },
+                {
+                    id: 'injection-1', rule: 'injection-depth', severity: 'warning',
+                    title: 'Static content injected at shallow depth 0',
+                    description: '"Author\'s Note" is injected into chat at depth 0. Shallow injections disrupt the cacheable portion of recent messages.',
+                    recommendation: 'Consider increasing the injection depth to 4+ to preserve cache efficiency.',
+                    affectedEntry: 'authors-note', provider: 'all',
+                    meta: { depth: 0 }
+                },
+                {
+                    id: 'provider-1', rule: 'provider-specific', severity: 'info',
+                    title: 'System message squashing enabled',
+                    description: 'squash_system_messages is enabled with 4 system prompts. Optimal for Anthropic prompt caching.',
+                    recommendation: 'No action needed — this is the recommended configuration.',
+                    affectedEntry: 'all', provider: 'anthropic',
+                    meta: {}
+                }
+            ]
+        };
+
+        // Mock prompt order entries
+        var mockPromptOrder = [
+            { identifier: 'main', name: 'Main Prompt' },
+            { identifier: 'charDescription', name: 'Character Description' },
+            { identifier: 'charPersonality', name: 'Character Personality' },
+            { identifier: 'chatHistory', name: 'Chat History' },
+            { identifier: 'scenario', name: 'Scenario', flagged: true },
+            { identifier: 'nsfw', name: 'NSFW' },
+            { identifier: 'jailbreak', name: 'Jailbreak' }
+        ];
+
+        // Render full dashboard
+        var dashboardRoot = document.getElementById('preview-dashboard');
+        dashboardRoot.innerHTML = '<div class="ca-panel">' +
+            '<div class="ca-header">' +
+                '<div class="ca-header-title">' +
+                    '<span class="ca-icon">\uD83D\uDD25</span>' +
+                    '<span>Cache Analyzer</span>' +
+                '</div>' +
+                '<div class="ca-header-actions">' +
+                    '<button class="ca-btn-analyze">Analyze</button>' +
+                    '<span class="ca-collapse-indicator">\u25BC</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="ca-body">' +
+                renderDashboard(mockResults) +
+            '</div>' +
+        '</div>';
+
+        // Render prompt visualization
+        var vizRoot = document.getElementById('preview-prompt-viz');
+        vizRoot.innerHTML = renderPromptViz(mockPromptOrder);
+
+        // Render empty state
+        var emptyRoot = document.getElementById('preview-empty');
+        emptyRoot.innerHTML = '<div class="ca-panel">' +
+            '<div class="ca-header">' +
+                '<div class="ca-header-title">' +
+                    '<span class="ca-icon">\uD83D\uDD25</span>' +
+                    '<span>Cache Analyzer</span>' +
+                '</div>' +
+                '<div class="ca-header-actions">' +
+                    '<button class="ca-btn-analyze">Analyze</button>' +
+                    '<span class="ca-collapse-indicator">\u25BC</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="ca-body">' +
+                renderEmptyState() +
+            '</div>' +
+        '</div>';
+
+        // Render loading state
+        var loadingRoot = document.getElementById('preview-loading');
+        loadingRoot.innerHTML = '<div class="ca-panel">' +
+            '<div class="ca-header">' +
+                '<div class="ca-header-title">' +
+                    '<span class="ca-icon">\uD83D\uDD25</span>' +
+                    '<span>Cache Analyzer</span>' +
+                '</div>' +
+                '<div class="ca-header-actions">' +
+                    '<button class="ca-btn-analyze ca-loading">Analyze</button>' +
+                    '<span class="ca-collapse-indicator">\u25BC</span>' +
+                '</div>' +
+            '</div>' +
+            '<div class="ca-body">' +
+                renderLoadingState() +
+            '</div>' +
+        '</div>';
+    </script>
+</body>
+</html>
