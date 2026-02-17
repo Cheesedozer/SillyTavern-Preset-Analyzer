@@ -7,9 +7,9 @@ global.expect = expect;
 
 // Import all test files (each registers tests via describe/it)
 require('./macro-placement.test');
+require('./prompt-ordering.test');
+require('./token-thresholds.test');
 // Future sessions will add:
-// require('./prompt-ordering.test');
-// require('./token-thresholds.test');
 // require('./injection-depth.test');
 // require('./provider-specific.test');
 // require('./analyzer.test');
