@@ -515,43 +515,37 @@ function renderResults(results, preset) {
 
 let panelBody = null;
 let analyzeBtn = null;
-let panelEl = null;
 
-function createPanelHTML() {
-    return `<div class="ca-panel" id="ca-panel">
-        <div class="ca-header" id="ca-header">
-            <div class="ca-header-title">
-                <span class="ca-icon">\uD83D\uDD25</span>
-                <span>Cache Analyzer</span>
+function createSettingsHTML() {
+    return `<div class="cache-analyzer-settings">
+        <div class="inline-drawer">
+            <div class="inline-drawer-toggle inline-drawer-header">
+                <b>\uD83D\uDD25 Preset Cache Analyzer</b>
+                <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
             </div>
-            <div class="ca-header-actions">
-                <button class="ca-btn-analyze" id="ca-btn-analyze">Analyze</button>
-                <span class="ca-collapse-indicator">\u25BC</span>
+            <div class="inline-drawer-content" id="ca-drawer-content">
+                <div class="cache-analyzer">
+                    <div style="margin-bottom: 10px;">
+                        <button class="ca-btn-analyze menu_button" id="ca-btn-analyze">Analyze</button>
+                    </div>
+                    <div id="ca-body">
+                        ${renderEmptyState()}
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="ca-body" id="ca-body">
-            ${renderEmptyState()}
         </div>
     </div>`;
 }
 
-function initDashboard(container) {
-    if (!container) return;
+function initDashboard() {
+    const settingsHtml = createSettingsHTML();
+    $('#extensions_settings2').append(settingsHtml);
 
-    container.innerHTML = createPanelHTML();
-
-    panelEl = container.querySelector('#ca-panel');
-    panelBody = container.querySelector('#ca-body');
-    analyzeBtn = container.querySelector('#ca-btn-analyze');
-
-    // Header click toggles collapse
-    container.querySelector('#ca-header').addEventListener('click', function (e) {
-        if (e.target.closest('.ca-btn-analyze')) return;
-        panelEl.classList.toggle('collapsed');
-    });
+    panelBody = document.getElementById('ca-body');
+    analyzeBtn = document.getElementById('ca-btn-analyze');
 
     // Analyze button click
-    analyzeBtn.addEventListener('click', function (e) {
+    $('#ca-btn-analyze').on('click', function (e) {
         e.stopPropagation();
         showLoading();
         setTimeout(function () { runAnalysis(); }, 50);
@@ -673,15 +667,8 @@ function registerSlashCommands() {
 async function init() {
     const settings = getSettings();
 
-    // Inject UI panel into ST extensions drawer
-    const panelContainer = document.getElementById('extensions_settings2');
-    if (panelContainer) {
-        const wrapper = document.createElement('div');
-        wrapper.classList.add('cache-analyzer');
-        wrapper.id = 'cache-analyzer-root';
-        panelContainer.appendChild(wrapper);
-        initDashboard(wrapper);
-    }
+    // Inject UI panel into ST extensions drawer using ST's inline-drawer pattern
+    initDashboard();
 
     // Register auto-analyze events
     if (settings.autoAnalyze) {
