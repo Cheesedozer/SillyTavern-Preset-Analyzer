@@ -8,7 +8,7 @@ Helps you get better cache hit rates with Claude, GPT-4, and Gemini.
 
 1. Copy this folder to:
    ```
-   SillyTavern/public/scripts/extensions/third_party/st-cache-analyzer/
+   https://github.com/Cheesedozer/SillyTavern-Preset-Analyzer
    ```
 2. Restart SillyTavern
 3. Enable the extension in Extensions panel
