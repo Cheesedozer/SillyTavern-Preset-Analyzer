@@ -9,9 +9,9 @@ global.expect = expect;
 require('./macro-placement.test');
 require('./prompt-ordering.test');
 require('./token-thresholds.test');
+require('./injection-depth.test');
+require('./provider-specific.test');
 // Future sessions will add:
-// require('./injection-depth.test');
-// require('./provider-specific.test');
 // require('./analyzer.test');
 
 // Run

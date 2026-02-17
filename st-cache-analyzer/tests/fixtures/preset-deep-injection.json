@@ -1,4 +1,71 @@
 {
-    "prompts": [],
-    "prompt_order": []
+    "prompts": [
+        {
+            "identifier": "main",
+            "name": "Main Prompt",
+            "content": "You are a creative writing assistant.",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 0,
+            "injection_depth": 4
+        },
+        {
+            "identifier": "authors-note",
+            "name": "Author's Note",
+            "content": "Write with vivid descriptions and emotional depth.",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 1,
+            "injection_depth": 0
+        },
+        {
+            "identifier": "dynamic-inject",
+            "name": "Dynamic Injection",
+            "content": "Current mood: {{random::happy,sad,angry,calm}}",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 1,
+            "injection_depth": 1
+        },
+        {
+            "identifier": "deep-inject",
+            "name": "Deep Injection",
+            "content": "Remember the quest objective.",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 1,
+            "injection_depth": 5
+        },
+        {
+            "identifier": "disabled-inject",
+            "name": "Disabled Injection",
+            "content": "This should not appear: {{random::x,y}}",
+            "enabled": false,
+            "role": "system",
+            "injection_position": 1,
+            "injection_depth": 0
+        },
+        {
+            "identifier": "chatHistory",
+            "name": "Chat History",
+            "content": "",
+            "enabled": true,
+            "role": "system",
+            "injection_position": 0,
+            "injection_depth": null
+        }
+    ],
+    "prompt_order": [
+        {
+            "character_id": 100001,
+            "order": [
+                { "identifier": "main", "enabled": true },
+                { "identifier": "authors-note", "enabled": true },
+                { "identifier": "dynamic-inject", "enabled": true },
+                { "identifier": "deep-inject", "enabled": true },
+                { "identifier": "disabled-inject", "enabled": false },
+                { "identifier": "chatHistory", "enabled": true }
+            ]
+        }
+    ]
 }
