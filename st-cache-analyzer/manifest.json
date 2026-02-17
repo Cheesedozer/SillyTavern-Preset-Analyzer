@@ -1,0 +1,12 @@
+{
+    "display_name": "Preset Cache Analyzer",
+    "loading_order": 10,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "ui/styles.css",
+    "author": "YourName",
+    "version": "0.1.0",
+    "homePage": "",
+    "auto_update": false
+}
