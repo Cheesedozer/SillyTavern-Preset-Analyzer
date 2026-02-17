@@ -1,3 +1,4 @@
+# SillyTavern-Preset-Analyzer
 # Preset Cache Analyzer — SillyTavern Extension
 
 Analyzes your SillyTavern API preset for prompt caching inefficiencies.
@@ -5,14 +6,9 @@ Helps you get better cache hit rates with Claude, GPT-4, and Gemini.
 
 ## Installation
 
-**Option A — Install via SillyTavern UI:**
-1. Open SillyTavern → Extensions → Install Extension
-2. Paste the repository URL and click Install
-
-**Option B — Manual install:**
-1. Clone or copy this repository into:
+1. Copy this folder to:
    ```
-   SillyTavern/data/default-user/extensions/SillyTavern-Preset-Analyzer/
+   https://github.com/Cheesedozer/SillyTavern-Preset-Analyzer
    ```
 2. Restart SillyTavern
 3. Enable the extension in Extensions panel
@@ -43,6 +39,7 @@ Helps you get better cache hit rates with Claude, GPT-4, and Gemini.
 ## Running Tests
 
 ```bash
+cd st-cache-analyzer
 node tests/run-all.js
 ```
 
